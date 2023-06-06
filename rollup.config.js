@@ -13,7 +13,7 @@ export default {
   plugins: [
     typescript(),
     resolve(),
-    commonjs({ ignoreDynamicRequires: true }),
+    commonjs({ esmExternals: true }),
     json(),
   ],
 };

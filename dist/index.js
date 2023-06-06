@@ -43,6 +43,10 @@ const require$$0__default$9 = /*#__PURE__*/_interopDefaultLegacy(require$$0$a);
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
+function commonjsRequire(path) {
+	throw new Error('Could not dynamically require "' + path + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
+}
+
 var core$2 = {};
 
 var command$1 = {};
@@ -32194,7 +32198,7 @@ function requireEsprima () {
 	var exportFn;
 	var toString = Object.prototype.toString;
 
-	if (typeof require === 'function') {
+	if (typeof commonjsRequire === 'function') {
 	  // server side
 	  esprima = requireEsprima();
 	  exportFn = function(redeyed) { module.exports = redeyed; };
@@ -41381,7 +41385,7 @@ const {parseBranch: parseBranch$1} = utils$b;
 
 const getPrEvent = ({env}) => {
   try {
-    const event = env.GITHUB_EVENT_PATH ? require(env.GITHUB_EVENT_PATH) : undefined;
+    const event = env.GITHUB_EVENT_PATH ? commonjsRequire(env.GITHUB_EVENT_PATH) : undefined;
 
     if (event && event.pull_request) {
       return {
@@ -41397,7 +41401,7 @@ const getPrEvent = ({env}) => {
 };
 
 const getPrNumber = (env) => {
-  const event = env.GITHUB_EVENT_PATH ? require(env.GITHUB_EVENT_PATH) : undefined;
+  const event = env.GITHUB_EVENT_PATH ? commonjsRequire(env.GITHUB_EVENT_PATH) : undefined;
   return event && event.pull_request ? event.pull_request.number : undefined;
 };
 
@@ -54105,7 +54109,7 @@ function requireImportFresh () {
 
 		const parent = require.cache[parentPath]; // If `filePath` and `parentPath` are the same, cache will already be deleted so we won't get a memory leak in next step
 
-		return parent === undefined ? require(filePath) : parent.require(filePath); // In case cache doesn't have parent, fall back to normal require
+		return parent === undefined ? commonjsRequire(filePath) : parent.require(filePath); // In case cache doesn't have parent, fall back to normal require
 	};
 	return importFresh$1;
 }
@@ -67045,7 +67049,7 @@ function loadPlugin$2({cwd}, name, pluginsPath) {
   const basePath = pluginsPath[name]
     ? dirname(resolveFrom$1.silent(__dirname, pluginsPath[name]) || resolveFrom$1(cwd, pluginsPath[name]))
     : __dirname;
-  return isFunction$1(name) ? name : require(resolveFrom$1.silent(basePath, name) || resolveFrom$1(cwd, name));
+  return isFunction$1(name) ? name : commonjsRequire(resolveFrom$1.silent(basePath, name) || resolveFrom$1(cwd, name));
 }
 
 function parseConfig$3(plugin) {
@@ -67342,7 +67346,7 @@ var getConfig$1 = async (context, cliOptions) => {
     // If `extends` is defined, load and merge each shareable config with `options`
     options = {
       ...castArray(extendPaths).reduce((result, extendPath) => {
-        const extendsOptions = require(resolveFrom.silent(__dirname, extendPath) || resolveFrom(cwd, extendPath));
+        const extendsOptions = commonjsRequire(resolveFrom.silent(__dirname, extendPath) || resolveFrom(cwd, extendPath));
 
         // For each plugin defined in a shareable config, save in `pluginsPath` the extendable config path,
         // so those plugin will be loaded relatively to the config file
