@@ -25,4 +25,5 @@ export async function outputPreview(): Promise<void> {
   }
 
   setOutput('releaseNotes', result.nextRelease.notes);
+  setOutput('releaseVersion', result.nextRelease.version);
 }

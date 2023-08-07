@@ -17,7 +17,8 @@ describe('outputPreview', () => {
 
   it('should generate the release notes and output it to GitHub Actions', async () => {
     const notes = 'Release notes';
-    const nextRelease = { notes };
+    const version = '1.0.0';
+    const nextRelease = { notes, version };
     mocked(semanticRelease).mockResolvedValue({ nextRelease } as semanticRelease.Result);
     mocked(getBaseConfig).mockResolvedValue({ branches: [prBranch], plugins });
 
@@ -28,5 +29,6 @@ describe('outputPreview', () => {
       expect.objectContaining({ env: { ...process.env, GITHUB_ACTIONS: '' } }),
     );
     expect(setOutput).toHaveBeenCalledWith('releaseNotes', notes);
+    expect(setOutput).toHaveBeenCalledWith('releaseVersion', version);
   });
 });

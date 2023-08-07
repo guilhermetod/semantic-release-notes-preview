@@ -78525,6 +78525,7 @@ async function outputPreview() {
         throw new Error('Failed to generate preview');
     }
     coreExports.setOutput('releaseNotes', result.nextRelease.notes);
+    coreExports.setOutput('releaseVersion', result.nextRelease.version);
 }
 
 outputPreview()
